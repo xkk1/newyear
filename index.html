@@ -386,7 +386,7 @@ http://www.runoob.com/index.php?id=1&image=awesome.jpg
 var page_url = window.location.origin+window.location.pathname;
 if (getQueryVariable("name")) {
     var name_div = document.getElementsByClassName("name");
-    name_div[0].innerHTML = decodeURIComponent(getQueryVariable("name") != false);
+    name_div[0].innerHTML = decodeURIComponent(getQueryVariable("name"));
 } else {
     change_name_button = document.getElementById("ch_name_btn").value = "添加姓名";
 }
