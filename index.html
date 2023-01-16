@@ -35,11 +35,11 @@ img#boom {width: 64px;margin-bottom: 36px;}
 #xx {
     opacity: 1;
     color: white;
-    animation: blink 0.5s linear infinite;
-    -webkit-animation: blink 0.5s linear infinite;
-    -moz-animation: blink 0.5s linear infinite;
-    -ms-animation: blink 0.5s linear infinite;
-    -o-animation: blink 0.5s linear infinite;
+    animation: blink 1s linear infinite;
+    -webkit-animation: blink 1s linear infinite;
+    -moz-animation: blink 1s linear infinite;
+    -ms-animation: blink 1s linear infinite;
+    -o-animation: blink 1s linear infinite;
 }
 
 @keyframes blink {
@@ -116,7 +116,7 @@ img#boom {width: 64px;margin-bottom: 36px;}
         <div class="page_two hide">
             <div id="text" style="display:none;">
 <span class="name"></span>
-<br><span class="time"></span>
+<span class="time"></span>
 <br>岁未将至 平安喜乐 2023万事如意🧨
 <br>唯愿烟花像星辰   祝你所愿皆成真🧨
         </div><!-- 此处小喾苦已进行修改，二次优化了倒计时 -->
@@ -387,18 +387,20 @@ http://www.runoob.com/index.php?id=1&image=awesome.jpg
 调用 getQueryVariable("image") 返回 "awesome.jpg"。
 */
 var page_url = window.location.origin+window.location.pathname;
+var name_span = document.getElementsByClassName("name");
 if (getQueryVariable("name")) {
-    var name_div = document.getElementsByClassName("name");
-    name_div[0].innerHTML = decodeURIComponent(getQueryVariable("name"));
+    name_span[0].innerHTML = decodeURIComponent(getQueryVariable("name")) + "<br />";
 } else {
+    name_span[0].style.display = "none";
     change_name_button = document.getElementById("ch_name_btn").value = "添加姓名";
 }
 function change_name() {
     var change_name_button = document.getElementById("ch_name_btn");
-    var name_div = document.getElementsByClassName("name");
+    var name_span = document.getElementsByClassName("name");
     if (change_name_button.value == "改变姓名" || change_name_button.value == "添加姓名" ) {
         change_name_button.value = "确定更改姓名";
-        name_div[1].innerHTML = '<input id="name_input" type="text" placeholder="请在这输入姓名" />';
+        name_span[1].innerHTML = '<input id="name_input" type="text" placeholder="请在这输入姓名" /><br />';
+        name_span[1].style.display = "";
     } else {
         var new_name = document.getElementById("name_input").value;
         window.location.href = page_url + "?name=" + encodeURIComponent(new_name);
