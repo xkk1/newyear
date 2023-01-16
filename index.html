@@ -15,15 +15,15 @@
     }
     input#ch_name_btn {
         background-color: transparent;
-        border-style: dashed;
+        border-style: solid;
         border-color: white;
-        color: gold;
-        font-size:1rem
+        color: white;
+        font-size: 1rem
     }
     #change_name_div {
         position: fixed;
-        left: 0;
-        bottom: 0;
+        left: 4px;
+        bottom: 4px;
         z-index: 501;
     }
     .name {
@@ -33,8 +33,6 @@ img#boom {width: 64px;margin-bottom: 36px;}
 #yhBtn{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff;font-size:20px}
 #setting{height: 0; width: 0; position: absolute; visibility: hidden;}
 #xx {
-    opacity: 1;
-    color: white;
     animation: blink 1s linear infinite;
     -webkit-animation: blink 1s linear infinite;
     -moz-animation: blink 1s linear infinite;
@@ -116,9 +114,9 @@ img#boom {width: 64px;margin-bottom: 36px;}
         <div class="page_two hide">
             <div id="text" style="display:none;">
 <span class="name"></span>
-<span class="time"></span>
-<br>岁未将至 平安喜乐 2023万事如意🧨
-<br>唯愿烟花像星辰   祝你所愿皆成真🧨
+<span class="time"></span>    
+<br>岁未将至 平安喜乐 2023万事如意🧨    
+<br>唯愿烟花像星辰   祝你所愿皆成真🧨    
         </div><!-- 此处小喾苦已进行修改，二次优化了倒计时 -->
 <div class="type_words" id="contents">
     <span id="contents_text"></span>
@@ -325,7 +323,7 @@ function change_class(class_name , innerHTML) {
     }
 }
 
-		function time() {
+function time() {
     var seconds = 1000
     var minutes = seconds * 60
     var hours = minutes * 60
@@ -348,20 +346,18 @@ function change_class(class_name , innerHTML) {
     var diffDays = Math.floor((diff / days) - diffYears * 365)
     var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours)
     var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes)
-    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes *
-        minutes) / seconds)
-    var diff2Years = Math.floor(diff2 / years)
-    var diff2Days = Math.floor((diff2 / days) - diff2Years * 365)
-    var diff2Hours = Math.floor((diff2 - (diff2Years * 365 + diff2Days) * days) / hours)
-    var diff2Minutes = Math.floor((diff2 - (diff2Years * 365 + diff2Days) * days - diff2Hours * hours) / minutes)
-    var diff2Seconds = Math.floor((diff2 - (diff2Years * 365 + diff2Days) * days - diff2Hours * hours - diff2Minutes *
-        minutes) / seconds)
-      if(todayMonth==1){if(todayDate<=21){change_class("time",  "还有"+diffDays + "天" + diffHours + "小时" + diffMinutes + "分钟" + diffSeconds + "秒就是除夕夜啦!")}}
-	else{change_class("time", "除夕夜已经过去啦，祝你新年快乐！")}
+    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds)
+    if(todayMonth==1){
+        if(todayDate<=21){
+            change_class("time",  "还有"+diffDays + "天" + diffHours + "小时" + diffMinutes + "分钟" + diffSeconds + "秒就是除夕夜啦!")
+        }
+    } else {
+        change_class("time", "除夕夜已经过去啦，祝你新年快乐！")
+    }
 }
 time();
 
-function auto_change_time(){
+function auto_change_time() {
     time();
     setTimeout(auto_change_time, 1000);
 }
@@ -369,8 +365,7 @@ function auto_change_time(){
 // by 小喾苦 2023年1月15日 
 
 // 以下JS函数用于获取url参数(https://www.runoob.com/w3cnote/js-get-url-param.html)
-function getQueryVariable(variable)
-{
+function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
     for (var i=0;i<vars.length;i++) {
