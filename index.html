@@ -24,14 +24,37 @@
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 1;
+        z-index: 501;
     }
     .name {
         font-size: 1.5rem;
     }
-	</style>
+img#boom {width: 64px;margin-bottom: 36px;}
+#yhBtn{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff;font-size:20px}
+#setting{height: 0; width: 0; position: absolute; visibility: hidden;}
+#xx {
+    opacity: 1;
+    color: white;
+    animation: blink 0.5s linear infinite;
+    -webkit-animation: blink 0.5s linear infinite;
+    -moz-animation: blink 0.5s linear infinite;
+    -ms-animation: blink 0.5s linear infinite;
+    -o-animation: blink 0.5s linear infinite;
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        color: white;
+    }
+
+    50% {
+        color: transparent;
+    }
+}
+</style>
     <title>新年快乐</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#000000">
@@ -39,18 +62,6 @@
     <link href="files/css/main.css" rel="stylesheet">
     <script src="files/js/jquery.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="files/css/style.css">
-    <script>
-        var shouci = true;
-        console.log(shouci);
-
-        function bodyPlayMusic() {
-            if (shouci) {
-                shouci = false;
-                audio.play();
-                console.log(shouci);
-            }
-        };
-    </script>
 </head>
 <!-- onclick="bodyPlayMusic()" -->
 
@@ -58,12 +69,12 @@
 
     <audio id="audioDom" src="https://sf6-cdn-tos.douyinstatic.com/obj/ies-music/7170534431801838367.mp3" preload="auto" loop="loop"></audio>
 
-    <div id="yhBtn" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff ; font-size:20px    ">
+    <div id="yhBtn">
         <p>💥点击我 (没反应请等待几秒再试)💥</p>
-        <img style="width:64px;margin-bottom:36px " src="files/boom.png">
+        <img id="boom" src="files/boom.png" alt="烟花">
     </div>
 
-    <div style="height: 0; width: 0; position: absolute; visibility: hidden;">
+    <div id="setting">
         <svg xmlns="http://www.w3.org/2000/svg">
             <symbol id="icon-play" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"></path>
@@ -104,13 +115,15 @@
         <div class="stage-container remove">
         <div class="page_two hide">
             <div id="text" style="display:none;">
-<div class="name"></div>
-<span class="time"></span>
+<span class="name"></span>
+<br><span class="time"></span>
 <br>岁未将至 平安喜乐 2023万事如意🧨
 <br>唯愿烟花像星辰   祝你所愿皆成真🧨
-<br><br>你是第<span id="busuanzi_value_page_pv"></span>个观赏到烟花的人
         </div><!-- 此处小喾苦已进行修改，二次优化了倒计时 -->
-<div class="type_words" id="contents" style="font-size:1.08rem;line-height:1.5rem;"></div>
+<div class="type_words" id="contents">
+    <span id="contents_text"></span>
+    <span id="xx">|</span>
+</div>
 <div id="change_name_div" style="display:none;">
     <input id="ch_name_btn" type="button" value="改变姓名" onclick="change_name()">
 </div>
@@ -300,24 +313,7 @@
             $('.page_one').addClass(' hide');
             $('.page_two').removeClass(' hide');
         }
-
-        function start() {
-            let str = $("#text").html(); //"于我而言，你是最好且是唯一"
-            let str_ = ''
-            let i = 0
-            let content = document.getElementById('contents')
-            let timer = setInterval(() => {
-                if (str_.length < str.length) {
-                    str_ += str[i++]
-                    content.innerHTML = '<p>' + str_ + '<span class="xx" style="opacity: 1;    color: white;">∎</span></p>' //打印时加光标
-                } else {
-                    clearInterval(timer)
-                    content.innerHTML = '<p>' + str_ + '</p>'
-                    document.getElementById("change_name_div").style.display = "";
-                }
-            }, 100)
-        }
-    </script><!--引用结束(内容未修改)-->
+    </script>
 
 
 <script>
@@ -330,7 +326,6 @@ function change_class(class_name , innerHTML) {
 }
 
 		function time() {
-    window.setTimeout("time()", 1000);
     var seconds = 1000
     var minutes = seconds * 60
     var hours = minutes * 60
@@ -365,6 +360,11 @@ function change_class(class_name , innerHTML) {
 	else{change_class("time", "除夕夜已经过去啦，祝你新年快乐！")}
 }
 time();
+
+function auto_change_time(){
+    time();
+    setTimeout(auto_change_time, 1000);
+}
 
 // by 小喾苦 2023年1月15日 
 
@@ -405,13 +405,53 @@ function change_name() {
     }
 }
 
+
+var text_index = 0;
+var content = document.getElementById('contents_text');
+var ifvisible = true;
+var text = document.getElementById("text").innerHTML;
+var print_text = "";
+var show_busuanzi = false;
+function start() {
+    // let str = $("#text").html(); // "于我而言，你是最好且是唯一"
+    if (text_index < text.length) {
+        if (text[text_index] == "<") {
+            ifvisible = false;
+        }
+        if (text[text_index] == ">") {
+            ifvisible = true;
+        }
+        print_text += text[text_index];
+        content.innerHTML = print_text;
+        text_index++;
+        if (ifvisible){
+            setTimeout(start, 100);
+        } else {
+            start();
+        }
+    } else if(!show_busuanzi) {
+        if (document.getElementById("busuanzi_value_page_pv").innerText.length) {
+            text += '<br>你是第' +document.getElementById("busuanzi_value_page_pv").innerText + "个观赏到烟花的人！";
+        }
+        show_busuanzi = true;
+        setTimeout(start, 100);
+    } else {
+        // content.innerHTML = '<p>' + text + '</p>';
+        document.getElementById("change_name_div").style.display = ""; // 显示改变姓名按钮
+        document.getElementById("xx").style.display = "none";
+        auto_change_time();
+    }
+}
 </script>
 
 
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <!--测试访问量统计功能-->
-<span id="busuanzi_container_page_pv">访问量<span id="busuanzi_value_page_pv"></span>次</span>
-<!--tip:此处为挂载的网页,源码中引用过他人的代码，均已标注-->
+<span id="busuanzi_container_page_pv">本文总阅读量<span id="busuanzi_value_page_pv"></span>次</span>、
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>、
+<span id="busuanzi_container_site_uv">本站总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+<!-- <span id="busuanzi_container_page_pv">访问量<span id="busuanzi_value_page_pv"></span>次</span> -->
+<!--tip:此处为挂载的网页,源码中引用过他人的代码-->
 <!--firework_simulator版权所有人:NianBroken，侵删-->
 </body>
 </html>
